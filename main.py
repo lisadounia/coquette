@@ -279,14 +279,14 @@ def timers(interval_bonus, interval_malus):
     return bonus_timer,malus_timer
 
 def main(restart=False):
-    # Initialisation
+
     pygame.init()
     screen = pygame.display.set_mode((700, 500))
     pygame.display.set_caption("Coquette")
 
     if not restart:
         opening(screen)
-        screen.fill((0, 0, 0))  # Effacer l'écran après l'ouverture
+        screen.fill((0, 0, 0))
         pygame.display.update()
 
     background = pygame.image.load('graphics/damier.jpg')
@@ -298,7 +298,6 @@ def main(restart=False):
 
     bonus_score, malus_score = 0, 3
 
-    # Groupes de sprites
     player = pygame.sprite.GroupSingle()
     player.add(Caracter())
     bonus_malus_group = pygame.sprite.Group()
@@ -307,9 +306,8 @@ def main(restart=False):
     interval_bonus = 2000
     interval_malus = 3000
     time_since_last_increase = 0
-    start_time = time.time()  # Début du temps
+    start_time = time.time()  
 
-    # Initialisation des timers
     bonus_timer, malus_timer = timers(interval_bonus, interval_malus)
 
     while True:
@@ -336,15 +334,15 @@ def main(restart=False):
             screen.blit(banner, (0, 0))
             screen.blit(title_surface, (0, 450))
 
-            # Mettre à jour et dessiner le joueur
+
             player.update()
             player.draw(screen)
 
-            # Mettre à jour et dessiner les objets
+
             bonus_malus_group.update()
             bonus_malus_group.draw(screen)
 
-            # Gérer les collisions et les scores
+
             bonus_score, malus_score = collusion(player, bonus_score, malus_score, bonus_malus_group)
 
             text_font = pygame.font.Font('fonts/Too Freakin Cute Demo.ttf', 30)
@@ -354,16 +352,16 @@ def main(restart=False):
             text_surface_2 = text_font.render(f'Score : {bonus_score}', False, 'White')
             screen.blit(text_surface_2, (250, 20))
 
-            time_display = f'Time: {minutes:02}:{seconds:02}' #02 permet d'affciher avec 2 chiffres
-            text_surface_3 = text_font.render(time_display, False, 'White')  # Affichage du temps écoulé en secondes
+            time_display = f'Time: {minutes:02}:{seconds:02}'
+            text_surface_3 = text_font.render(time_display, False, 'White')
             screen.blit(text_surface_3, (0, 20))
 
-            # Augmenter les intervals toutes les 15 secondes, les intervals deviennent de plus en plus petits au fil du temps
+
             if time_since_last_increase >= 15:
-                interval_bonus = max(interval_bonus - 400, 400)  # soustraction de 400 ms, si sup à 400 sinon la valeur reste 400
+                interval_bonus = max(interval_bonus - 400, 400)
                 interval_malus = max(interval_malus - 400, 400)
                 bonus_timer, malus_timer = timers(interval_bonus, interval_malus)
-                time_since_last_increase = 0  # Réinitialiser le compteur de temps
+                time_since_last_increase = 0
 
         else:
             game_over(screen, bonus_score)
